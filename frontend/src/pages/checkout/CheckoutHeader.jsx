@@ -2,8 +2,9 @@ import { Link } from "react-router";
 import "./CheckoutHeader.css";
 import MobileLogo from "../../assets/images/mobile-logo.png";
 import Logo from "../../assets/images/logo.png";
+import { calculateCartQuantity } from "../../utils/cart";
 
-export function CheckoutHeader() {
+export function CheckoutHeader({ cart }) {
   return (
     <>
       <div className="checkout-header">
@@ -18,7 +19,7 @@ export function CheckoutHeader() {
           <div className="checkout-header-middle-section">
             Checkout (
             <Link className="return-to-home-link" to="/">
-              3 items
+              {calculateCartQuantity(cart)} items
             </Link>
             )
           </div>
