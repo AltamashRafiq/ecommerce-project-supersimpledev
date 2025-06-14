@@ -24,14 +24,24 @@ export function TrackingPage({ cart }) {
     return null;
   }
 
-  const productDetails = order.products.find(
+  const orderProduct = order.products.find(
     (product) => product.productId === productId
+  );
+
+  const totalDeliveryTimeMs =
+    orderProduct.estimatedDeliveryTimeMs - order.orderTimeMs;
+  const timePassedMs = dayjs().valueOf() - order.orderTimeMs;
+  let deliveryPercent = 100 * (timePassedMs / totalDeliveryTimeMs);
+  deliveryPercent = deliveryPercent > 100 ? 100 : deliveryPercent;
+
+  const deliveryDateString = dayjs(orderProduct.estimatedDeliveryTimeMs).format(
+    "dddd, MMMM D"
   );
 
   return (
     <>
       <title>Tracking</title>
-      <link rel="icon" type="image/svg+xml" href="/tracking-favicon.png" />
+      <link rel="icon" type="image/png" href="/tracking-favicon.png" />
 
       <Header cart={cart} />
 
@@ -42,19 +52,15 @@ export function TrackingPage({ cart }) {
           </Link>
 
           <div className="delivery-date">
-            Arriving on{" "}
-            {dayjs(productDetails.estimatedDeliveryTimeMs).format(
-              "dddd, MMMM D"
-            )}
+            {deliveryPercent === 100 ? "Delivered on" : "Arriving on"}{" "}
+            {deliveryDateString}
           </div>
 
-          <div className="product-info">{productDetails.product.name}</div>
+          <div className="product-info">{orderProduct.product.name}</div>
 
-          <div className="product-info">
-            Quantity: {productDetails.quantity}
-          </div>
+          <div className="product-info">Quantity: {orderProduct.quantity}</div>
 
-          <img className="product-image" src={productDetails.product.image} />
+          <img className="product-image" src={orderProduct.product.image} />
 
           <div className="progress-labels-container">
             <div className="progress-label">Preparing</div>
@@ -63,7 +69,10 @@ export function TrackingPage({ cart }) {
           </div>
 
           <div className="progress-bar-container">
-            <div className="progress-bar"></div>
+            <div
+              className="progress-bar"
+              style={{ width: `${deliveryPercent}%` }}
+            ></div>
           </div>
         </div>
       </div>
