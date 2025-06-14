@@ -5,7 +5,7 @@ async function deleteProduct() {
   await sequelize.sync();
 
   // Change this to the name or id of the product you want to delete
-  const productName = "Altamusy";
+  const productName = "Altamushy";
 
   const deletedCount = await Product.destroy({
     where: { name: productName },
