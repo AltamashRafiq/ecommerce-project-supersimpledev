@@ -2,8 +2,9 @@ import { NavLink } from "react-router";
 import MobileLogo from "../assets/images/mobile-logo.png";
 import LogoWhite from "../assets/images/logo-white.png";
 import "./Header.css";
+import { calculateCartQuantity } from "../utils/cart";
 
-export function Header() {
+export function Header({ cart }) {
   return (
     <div className="header">
       <div className="left-section">
@@ -28,7 +29,7 @@ export function Header() {
 
         <NavLink className="cart-link header-link" to="/checkout">
           <img className="cart-icon" src="images/icons/cart-icon.png" />
-          <div className="cart-quantity">3</div>
+          <div className="cart-quantity">{calculateCartQuantity(cart)}</div>
           <div className="cart-text">Cart</div>
         </NavLink>
       </div>
