@@ -3,8 +3,19 @@ import MobileLogo from "../assets/images/mobile-logo.png";
 import LogoWhite from "../assets/images/logo-white.png";
 import "./Header.css";
 import { calculateCartQuantity } from "../utils/cart";
+import { useState } from "react";
 
 export function Header({ cart }) {
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const handleChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const searchProduct = () => {
+    console.log(searchQuery);
+  };
+
   return (
     <div className="header">
       <div className="left-section">
@@ -15,9 +26,15 @@ export function Header({ cart }) {
       </div>
 
       <div className="middle-section">
-        <input className="search-bar" type="text" placeholder="Search" />
+        <input
+          className="search-bar"
+          type="text"
+          placeholder="Search"
+          value={searchQuery}
+          onChange={handleChange}
+        />
 
-        <button className="search-button">
+        <button className="search-button" onClick={searchProduct}>
           <img className="search-icon" src="images/icons/search-icon.png" />
         </button>
       </div>
