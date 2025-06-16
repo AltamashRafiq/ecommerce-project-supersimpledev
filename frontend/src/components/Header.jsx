@@ -1,4 +1,4 @@
-import { NavLink } from "react-router";
+import { NavLink, useNavigate, useSearchParams } from "react-router";
 import MobileLogo from "../assets/images/mobile-logo.png";
 import LogoWhite from "../assets/images/logo-white.png";
 import "./Header.css";
@@ -6,14 +6,27 @@ import { calculateCartQuantity } from "../utils/cart";
 import { useState } from "react";
 
 export function Header({ cart }) {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchParams] = useSearchParams();
+  const [search, setSearch] = useState(
+    searchParams.get("search") ? searchParams.get("search") : ""
+  );
+  // const [search, setSearch] = useState("");
 
   const handleChange = (event) => {
-    setSearchQuery(event.target.value);
+    setSearch(event.target.value);
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      searchProduct();
+    } else if (event.key === "Escape") {
+      setSearch("");
+    }
+  };
+
+  const navigate = useNavigate();
   const searchProduct = () => {
-    console.log(searchQuery);
+    navigate(`/?search=${search}`);
   };
 
   return (
@@ -30,8 +43,9 @@ export function Header({ cart }) {
           className="search-bar"
           type="text"
           placeholder="Search"
-          value={searchQuery}
+          value={search}
           onChange={handleChange}
+          onKeyDown={handleKeyDown}
         />
 
         <button className="search-button" onClick={searchProduct}>
