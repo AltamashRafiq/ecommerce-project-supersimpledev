@@ -44,8 +44,8 @@ export function Product({ product, loadCart }) {
 
       <div className="product-rating-container">
         <img
-          className="product-rating-stars-image"
-          data-testid="product-rating-stars"
+          className="product-rating-stars"
+          data-testid="product-rating-stars-image"
           src={`images/ratings/rating-${product.rating.stars * 10}.png`}
         />
         <div className="product-rating-count link-primary">
@@ -56,7 +56,11 @@ export function Product({ product, loadCart }) {
       <div className="product-price">{formatMoney(product.priceCents)}</div>
 
       <div className="product-quantity-container">
-        <select value={quantity} onChange={selectQuantity}>
+        <select
+          value={quantity}
+          onChange={selectQuantity}
+          data-testid="quantity-selector"
+        >
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
