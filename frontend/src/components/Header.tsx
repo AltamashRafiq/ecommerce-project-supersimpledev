@@ -5,17 +5,25 @@ import "./Header.css";
 import { calculateCartQuantity } from "../utils/cart";
 import { useState } from "react";
 
-export function Header({ cart }) {
+type HeaderProps = {
+  cart: {
+    productId: string;
+    quantity: number;
+    deliveryOptionId: string;
+  }[];
+};
+
+export function Header({ cart }: HeaderProps) {
   const [searchParams] = useSearchParams();
-  const [search, setSearch] = useState(
-    searchParams.get("search") ? searchParams.get("search") : ""
+  const [search, setSearch] = useState<string>(
+    searchParams.get("search") ?? ""
   );
 
-  const handleChange = (event) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
       searchProduct();
     } else if (event.key === "Escape") {
