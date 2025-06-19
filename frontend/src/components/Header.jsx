@@ -10,7 +10,6 @@ export function Header({ cart }) {
   const [search, setSearch] = useState(
     searchParams.get("search") ? searchParams.get("search") : ""
   );
-  // const [search, setSearch] = useState("");
 
   const handleChange = (event) => {
     setSearch(event.target.value);
