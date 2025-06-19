@@ -75,12 +75,12 @@ describe("HomePage component", () => {
     const productContainers = await screen.findAllByTestId("product-container");
     const user = userEvent.setup();
 
-    const button1 = within(productContainers[0]).getByTestId(
+    let button1 = within(productContainers[0]).getByTestId(
       "add-to-cart-button"
     );
     await user.click(button1);
 
-    const button2 = within(productContainers[1]).getByTestId(
+    let button2 = within(productContainers[1]).getByTestId(
       "add-to-cart-button"
     );
     await user.click(button2);
@@ -92,6 +92,28 @@ describe("HomePage component", () => {
     expect(axios.post).toHaveBeenNthCalledWith(2, "/api/cart-items", {
       productId: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
       quantity: 1,
+    });
+    expect(loadCart).toHaveBeenCalledTimes(2);
+
+    const quantitySelector1 = within(productContainers[0]).getByTestId(
+      "quantity-selector"
+    );
+    const quantitySelector2 = within(productContainers[1]).getByTestId(
+      "quantity-selector"
+    );
+
+    await user.selectOptions(quantitySelector1, "2");
+    await user.selectOptions(quantitySelector2, "3");
+    await user.click(button1);
+    await user.click(button2);
+
+    expect(axios.post).toHaveBeenNthCalledWith(3, "/api/cart-items", {
+      productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+      quantity: 2,
+    });
+    expect(axios.post).toHaveBeenNthCalledWith(4, "/api/cart-items", {
+      productId: "15b6fc6f-327a-4ec4-896f-486349e85a3d",
+      quantity: 3,
     });
   });
 });
