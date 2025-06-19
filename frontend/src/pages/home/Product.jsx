@@ -8,6 +8,7 @@ export function Product({ product, loadCart }) {
   const [timeoutKey, setTimeoutKey] = useState(null);
 
   const addToCart = async () => {
+    console.log("Clicked!!");
     await axios.post("/api/cart-items", {
       productId: product.id,
       quantity,
