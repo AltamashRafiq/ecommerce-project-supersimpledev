@@ -9,6 +9,7 @@ vi.mock("axios");
 describe("Product component", () => {
   let product;
   let loadCart;
+  let user;
 
   beforeEach(() => {
     product = {
@@ -24,6 +25,7 @@ describe("Product component", () => {
     };
 
     loadCart = vi.fn();
+    user = userEvent.setup();
 
     render(<Product product={product} loadCart={loadCart} />);
   });
@@ -49,7 +51,6 @@ describe("Product component", () => {
   });
 
   it("adds a product to the cart", async () => {
-    const user = userEvent.setup();
     const addToCartButton = screen.getByTestId("add-to-cart-button");
     await user.click(addToCartButton);
 
@@ -64,8 +65,16 @@ describe("Product component", () => {
     const quantitySelector = screen.getByTestId("quantity-selector");
     expect(quantitySelector).toHaveValue("1");
 
-    const user = userEvent.setup();
     await user.selectOptions(quantitySelector, "3");
     expect(quantitySelector).toHaveValue("3");
+
+    const addToCartButton = screen.getByTestId("add-to-cart-button");
+    await user.click(addToCartButton);
+
+    expect(axios.post).toHaveBeenCalledWith("/api/cart-items", {
+      productId: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
+      quantity: 3,
+    });
+    expect(loadCart).toHaveBeenCalled();
   });
 });
